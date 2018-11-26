@@ -43,6 +43,10 @@ public class loginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        login_id = (EditText)findViewById(R.id.login_id);
+        password = (EditText)findViewById(R.id.password);
+
     }
 
 
@@ -61,12 +65,12 @@ public class loginActivity extends AppCompatActivity {
 
     void login() {
         try {
-            Toast.makeText(loginActivity.this, "로그인 함수실행", Toast.LENGTH_SHORT).show();
+
             httpclient = new DefaultHttpClient();
             httppost = new HttpPost("http://hyunjun0315.dothome.co.kr/php/login.php");
             nameValuePairs = new ArrayList<NameValuePair>(2);
 
-            nameValuePairs.add(new BasicNameValuePair("username", login_id.getText().toString()));
+            nameValuePairs.add(new BasicNameValuePair("id", login_id.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("password", password.getText().toString()));
 
             strLogin = login_id.getText().toString();
@@ -76,18 +80,14 @@ public class loginActivity extends AppCompatActivity {
             response = httpclient.execute(httppost);
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
-            Log.d("loginActivity", strLogin + strPassword);
 
             final String response = httpclient.execute(httppost, responseHandler);
-            System.out.println("Response : " + response);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     dialog.dismiss();
                 }
             });
-
-            Log.d("loginActivity", "runOnUiThread");
 
             //로그인 성공했을 때 echo로 값
             if (response.equalsIgnoreCase("User Found")) {
