@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnSchedule;
+    private Button btnCalendar;
     private Button btnHealth;
     private Button btnJournal;
     private Button btnFacility;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         btnUserInformation = (Button) findViewById(R.id.userInformation_button);
         btnJournal = (Button) findViewById(R.id.journal_button);
         btnHealth = (Button) findViewById(R.id.health_button);
-        btnSchedule = (Button) findViewById(R.id.schedule_button);
+        btnCalendar = (Button) findViewById(R.id.calendar_button);
 
         btnFacility.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -54,10 +53,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnSchedule.setOnClickListener(new Button.OnClickListener() {
+        btnCalendar.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                startActivity(intent);
             }
         });
 
