@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<<<<<<< HEAD
-=======
     <Button
         android:id="@+id/facility_button"
         android:layout_width="wrap_content"
@@ -60,5 +58,5 @@
         android:text="성장일지관리"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
->>>>>>> ba6d695514c75cbc0e066a0631e792cd01f885b6
+
 </android.support.constraint.ConstraintLayout>
