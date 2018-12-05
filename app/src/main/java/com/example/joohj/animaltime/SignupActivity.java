@@ -100,9 +100,9 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         }
-        InsertData task = new InsertData();
-        task.execute(Id, Pw,Name);
 
+        InsertData task = new InsertData();
+        task.execute(Id, Pw, Name);
 
     }
 
@@ -112,13 +112,29 @@ public class SignupActivity extends AppCompatActivity {
         strNewPassword = signup_password.getText().toString();
         strNewname = signup_name.getText().toString();
 
-        insertToDatabase(strNewID, strNewPassword, strNewname);
+        if(containsWhiteSpace(strNewID) == true && containsWhiteSpace(strNewname) == true && containsWhiteSpace(strNewname) == true) {
+            insertToDatabase(strNewID, strNewPassword, strNewname);
+            startActivity((new Intent(SignupActivity.this, loginActivity.class)));
+            finish();
+        } else {
+            Toast.makeText(SignupActivity.this, "내용을 모두 채워주세요. 공백이 포함될수는 없습니다.", Toast.LENGTH_SHORT).show();
+        }
 
-        startActivity((new Intent(SignupActivity.this, loginActivity.class)));
-        finish();
+
+
     }
 
+    public static boolean containsWhiteSpace(String testCode){
 
-
+        if(testCode.length() == 0) {
+            return false;
+        }
+        for(int i = 0; i < testCode.length(); i++) {
+            if(Character.isWhitespace(testCode.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
