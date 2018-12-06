@@ -22,8 +22,8 @@ import java.net.URLEncoder;
 
 public class myPageActivity extends AppCompatActivity {
 
-    EditText passwordText, chkPasswordText, userNameText;
-    String password, chkPassword, userName;
+    EditText passwordText, chkPasswordText, userNameText,addressText;
+    String password, chkPassword, userName, address;
     Button submit, leave;
 
     @Override
@@ -34,6 +34,7 @@ public class myPageActivity extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.signup_password);
         chkPasswordText = (EditText) findViewById(R.id.signup_password_chk);
         userNameText = (EditText) findViewById(R.id.signup_name);
+        addressText = (EditText) findViewById(R.id.signup_address);
 
         submit = (Button) findViewById(R.id.submit);
         leave = (Button) findViewById(R.id.leave);
@@ -62,13 +63,14 @@ public class myPageActivity extends AppCompatActivity {
         password = passwordText.getText().toString();
         chkPassword = chkPasswordText.getText().toString();
         userName = userNameText.getText().toString();
+        address = addressText.getText().toString();
 
         if(!password.equals(chkPassword)){
             Toast.makeText(myPageActivity.this, "동일한 비밀번호를 사용해주세요.", Toast.LENGTH_SHORT).show();
-        } else if(containsWhiteSpace(password) == false) {
-            Toast.makeText(myPageActivity.this, "비밀번호는 공백이 들어갈 수 없습니다.", Toast.LENGTH_SHORT).show();
+        } else if(containsWhiteSpace(password) == false || containsWhiteSpace(userName) == false || containsWhiteSpace(address) == false) {
+            Toast.makeText(myPageActivity.this, "공백이 들어갈 수 없습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            insertToDatabase(identifier, password, userName);
+            insertToDatabase(identifier, password, userName, address);
             Intent intent = new Intent(myPageActivity.this, MainActivity.class);
             intent.putExtra("userID",identifier);
             startActivity(intent);
@@ -114,7 +116,7 @@ public class myPageActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void insertToDatabase(String Id, String Pw,String Name) {
+    private void insertToDatabase(String Id, String Pw,String Name, String Address) {
         class InsertData extends AsyncTask<String, Void, String> {
             ProgressDialog loading;
 
@@ -138,11 +140,13 @@ public class myPageActivity extends AppCompatActivity {
                     String Id = (String) params[0];
                     String Pw = (String) params[1];
                     String Name = (String) params[2];
+                    String Address = (String) params[3];
 
                     String link = "http://hyunjun0315.dothome.co.kr/php/mypage.php?";
                     String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(Id, "UTF-8");
                     data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(Pw, "UTF-8");
                     data += "&" + URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(Name, "UTF-8");
+                    data += "&" + URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(Address, "UTF-8");
 
                     link+=data;
 
@@ -174,7 +178,7 @@ public class myPageActivity extends AppCompatActivity {
         }
 
         InsertData task = new InsertData();
-        task.execute(Id, Pw, Name);
+        task.execute(Id, Pw, Name, Address);
 
     }
 

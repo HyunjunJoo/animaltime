@@ -36,11 +36,20 @@
         android:hint="이름을 입력하세요"
         />
 
+    <EditText
+        android:id="@+id/signup_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="주소를 입력하세요"
+        />
+
     <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="수정" />
+        android:text="수정"
+        android:background="@android:color/transparent"
+        />
 
     <Button
         android:id="@+id/leave"
