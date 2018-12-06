@@ -25,7 +25,7 @@ import java.net.MalformedURLException;
 public class SignupActivity extends AppCompatActivity {
 
     EditText signup_id, signup_password, signup_name;
-    String strNewID, strNewPassword, strNewname;
+    String strNewID, strNewPassword, strNewName;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
 
     //insert 함수
     //회원가입 데이터 넣기
-    private void insertToDatabase(String Id, String Pw,String Name) {
+    private void insertToDatabase(String Id, String Pw, String Name) {
         class InsertData extends AsyncTask<String, Void, String> {
             ProgressDialog loading;
 
@@ -110,10 +110,10 @@ public class SignupActivity extends AppCompatActivity {
     public void onClicked(View view) {
         strNewID = signup_id.getText().toString();
         strNewPassword = signup_password.getText().toString();
-        strNewname = signup_name.getText().toString();
+        strNewName = signup_name.getText().toString();
 
-        if(containsWhiteSpace(strNewID) == true && containsWhiteSpace(strNewname) == true && containsWhiteSpace(strNewname) == true) {
-            insertToDatabase(strNewID, strNewPassword, strNewname);
+        if(containsWhiteSpace(strNewID) == true && containsWhiteSpace(strNewPassword) == true) {
+            insertToDatabase(strNewID, strNewPassword, strNewName);
             startActivity((new Intent(SignupActivity.this, loginActivity.class)));
             finish();
         } else {
