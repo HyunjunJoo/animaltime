@@ -14,10 +14,15 @@
         class="com.google.android.gms.maps.MapFragment" />
 
     <Button
-        android:text="장소검색"
+        android:text="펫샵 검색"
+        android:paddingLeft="18dip"
+        android:drawableLeft="@drawable/doggy"
+        android:drawablePadding="18dip"
+        android:gravity="left|center_vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
         android:id="@+id/button"/>
+
 
 </LinearLayout>

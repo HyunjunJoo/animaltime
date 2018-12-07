@@ -673,10 +673,10 @@ public class FacilityActivity extends AppCompatActivity
 
         new NRPlaces.Builder()
                 .listener(FacilityActivity.this)
-                .key("AIzaSyCJkkwliOPPb8e74VmuDLmFqzV7SlyXoMA")
+                .key("AIzaSyCrGt47J6V-f1pe-t-ZYAQzcKPbAEhVi5c")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(500) //500 미터 내에서 검색
-                .type(PlaceType.RESTAURANT) //음식점
+                .radius(5000) //500 미터 내에서 검색
+                .type(PlaceType.PET_STORE) //음식점
                 .build()
                 .execute();
     }
