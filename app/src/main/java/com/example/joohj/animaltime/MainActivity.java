@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnJournal;
     private Button btnFacility;
     private Button btnUserInformation;
+    private Button btnMypage;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
         btnJournal = (Button) findViewById(R.id.journal_button);
         btnHealth = (Button) findViewById(R.id.health_button);
         btnCalendar = (Button) findViewById(R.id.calendar_button);
+        btnMypage = (Button) findViewById(R.id.mypage_button);
+
+        //인텐트로 넘겨줄 UserID
+        Intent userID;
+        userID = getIntent();
+        String ID = userID.getStringExtra("userID");
+        //
 
         btnFacility.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -60,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnMypage.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, myPageActivity.class);
+                intent.putExtra("userID",ID);
+                startActivity(intent);
+                finish();
             }
         });
 
