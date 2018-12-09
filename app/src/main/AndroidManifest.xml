@@ -28,6 +28,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".myPageActivity" />
         <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".myPetActivity" />
+        <activity android:name=".newPetActivity" />
     </application>
 
 </manifest>
