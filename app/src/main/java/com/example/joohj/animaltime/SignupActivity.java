@@ -24,8 +24,8 @@ import java.net.MalformedURLException;
 
 public class SignupActivity extends AppCompatActivity {
 
-    EditText signup_id, signup_password, signup_name;
-    String strNewID, strNewPassword, strNewname;
+    EditText signup_id, signup_password, signup_name, signup_resident, signup_address;
+    String strNewID, strNewPassword, strNewName, strResident, strAddress;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +34,17 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
 
-        signup_id = (EditText) findViewById(R.id.signup_id);
+        signup_id       = (EditText) findViewById(R.id.signup_id);
         signup_password = (EditText) findViewById(R.id.signup_password);
-        signup_name = (EditText) findViewById(R.id.signup_name);
+        signup_name     = (EditText) findViewById(R.id.signup_name);
+        signup_resident = (EditText) findViewById(R.id.signup_resident);
+        signup_address  = (EditText) findViewById(R.id.signup_address);
 
     }
 
     //insert 함수
     //회원가입 데이터 넣기
-    private void insertToDatabase(String Id, String Pw,String Name) {
+    private void insertToDatabase(String Id, String Pw, String Name, String Resident, String Address) {
         class InsertData extends AsyncTask<String, Void, String> {
             ProgressDialog loading;
 
@@ -66,11 +68,15 @@ public class SignupActivity extends AppCompatActivity {
                     String Id = (String) params[0];
                     String Pw = (String) params[1];
                     String Name = (String) params[2];
+                    String Resident = (String) params[3];
+                    String Address = (String) params[4];
 
                     String link = "http://hyunjun0315.dothome.co.kr/php/signup.php?";
                     String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(Id, "UTF-8");
                     data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(Pw, "UTF-8");
                     data += "&" + URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(Name, "UTF-8");
+                    data += "&" + URLEncoder.encode("resident", "UTF-8") + "=" + URLEncoder.encode(Resident, "UTF-8");
+                    data += "&" + URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(Address, "UTF-8");
 
                     link+=data;
 
@@ -100,25 +106,44 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         }
-        InsertData task = new InsertData();
-        task.execute(Id, Pw,Name);
 
+        InsertData task = new InsertData();
+        task.execute(Id, Pw, Name, Resident, Address);
 
     }
 
 
     public void onClicked(View view) {
-        strNewID = signup_id.getText().toString();
-        strNewPassword = signup_password.getText().toString();
-        strNewname = signup_name.getText().toString();
+        strNewID        = signup_id.getText().toString();
+        strNewPassword  = signup_password.getText().toString();
+        strNewName      = signup_name.getText().toString();
+        strResident     = signup_resident.getText().toString();
+        strAddress      = signup_address.getText().toString();
 
-        insertToDatabase(strNewID, strNewPassword, strNewname);
+        if(containsWhiteSpace(strNewID) == true && containsWhiteSpace(strNewPassword) == true && strNewName.length() != 0
+                && containsWhiteSpace(strResident) == true && containsWhiteSpace(strAddress) == true) {
+            insertToDatabase(strNewID, strNewPassword, strNewName, strResident, strAddress);
+            startActivity((new Intent(SignupActivity.this, loginActivity.class)));
+            finish();
+        } else {
+            Toast.makeText(SignupActivity.this, "내용을 모두 채워주세요. 공백이 포함될수는 없습니다.", Toast.LENGTH_SHORT).show();
+        }
 
-        startActivity((new Intent(SignupActivity.this, loginActivity.class)));
-        finish();
+
+
     }
 
+    public static boolean containsWhiteSpace(String testCode){
 
-
+        if(testCode.length() == 0) {
+            return false;
+        }
+        for(int i = 0; i < testCode.length(); i++) {
+            if(Character.isWhitespace(testCode.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

@@ -30,6 +30,8 @@
         <activity android:name=".CalendarActivity" />
         <activity android:name=".WeatherActivity" />
         <activity android:name=".WalkRegistrationActivity"></activity>
+        <activity android:name=".DiaryActivity"></activity>
+
     </application>
 
 </manifest>

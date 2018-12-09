@@ -99,7 +99,9 @@ public class loginActivity extends AppCompatActivity {
                 });
 
                 //성공하고 다른 activity로 넘어감
-                startActivity((new Intent(getApplicationContext(),MainActivity.class)));
+                Intent intent = new Intent(loginActivity.this, MainActivity.class);
+                intent.putExtra("userID",strLogin);
+                startActivityForResult(intent, 1);
                 finish();
 
             } else {
@@ -117,6 +119,7 @@ public class loginActivity extends AppCompatActivity {
     public void signUpClicked(View v) {
         Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
