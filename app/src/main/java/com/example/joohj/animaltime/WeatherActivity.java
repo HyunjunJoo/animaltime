@@ -3,6 +3,7 @@ package com.example.joohj.animaltime;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,8 +39,8 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView weather;
     private ImageView sky;
     private ImageView rain;
-    //private Button forecast;
-    //private Button walk;
+    private Button walk;
+
     public static StringBuilder sb;
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1001;
     private int permissionCheck;
@@ -88,57 +90,19 @@ public class WeatherActivity extends AppCompatActivity {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
                     altitude = location.getAltitude();
-                    //weather.setText("위치정보 : " + provider + "\n" + "위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" + "고도 : " + altitude);
-                    //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
-                    //lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
                 }
             }
         }
 
-        /*
-        if (isGPSGranted) {
-            final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-            if (location == null) {
-                Log.d("location", ">>> Location is null");
-                showDefaultWeather();
+        walk = (Button)findViewById(R.id.walk_button);
+        walk.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WalkRegistrationActivity.class);
+                startActivity(intent);
             }
-            else {
-                if (location.getProvider() == null) {
-                    Log.d("location", ">>> Location provider is null");
-                    showDefaultWeather();
-                }
-                else {
-                    Log.d("location", ">>> Get location");
-                    provider = location.getProvider();
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-                    altitude = location.getAltitude();
-                    //weather.setText("위치정보 : " + provider + "\n" + "위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" + "고도 : " + altitude);
-                    //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
-                    //lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
-                }
-            }
-        }
-        else {
-            //weather.setText("GPS가 승인되어있지 않습니다.");
-            showDefaultWeather();
-        }
-        */
-
+        });
     }
-
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        if (isGPSGranted) {
-            weather.setText("위치정보 : " + provider + "\n" + "위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" + "고도 : " + altitude);
-        }
-        else {
-            showDefaultWeather();
-        }
-    }*/
 
     public void showDefaultWeather() {
         String [] baseDateTime = findBaseDateTime();
@@ -154,7 +118,7 @@ public class WeatherActivity extends AppCompatActivity {
         networkTask.execute();
     }
 
-    //기상청 동네예보를 위한 Base_date와 Base_time을 구한다.
+    //기상청 동네예보를 부를 때 주어야 하는 Base_date와 Base_time을 구한다.
     public String [] findBaseDateTime() {
         Calendar calendar = Calendar.getInstance();
 
@@ -191,7 +155,6 @@ public class WeatherActivity extends AppCompatActivity {
         base_date = sdf.format(calendar.getTime());
 
         String [] result = {base_date, base_time};
-        //Toast.makeText(this, "base_date : " + base_date + " / base_time : " + base_time, Toast.LENGTH_LONG).show();
         return result;
     }
 
@@ -201,8 +164,6 @@ public class WeatherActivity extends AppCompatActivity {
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
             double altitude = location.getAltitude();
-
-            weather.setText("위치정보 : " + provider + "\n" + "위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" + "고도 : " + altitude);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -276,10 +237,6 @@ public class WeatherActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             try {
                 URL url = new URL(this.url);
-
-                XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
-                XmlPullParser parser = parserCreator.newPullParser();
-
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("GET");
                 int responseCode = con.getResponseCode();

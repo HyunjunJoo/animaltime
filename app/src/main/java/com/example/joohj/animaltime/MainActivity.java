@@ -49,8 +49,12 @@ public class MainActivity extends AppCompatActivity {
         btnHealth.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
-                startActivity(intent);
+                Intent userID;
+                userID = getIntent();
+                String ID = userID.getStringExtra("userID");
+
+                userID = new Intent(getApplicationContext(), WeatherActivity.class);
+                startActivity(userID);
             }
         });
 
