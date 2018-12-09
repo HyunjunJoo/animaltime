@@ -49,7 +49,7 @@ public class myPetActivity extends AppCompatActivity {
         ID = userID.getStringExtra("userID");
 
         btnAddPet = (Button) findViewById(R.id.btnAdd);
-        
+
         ListView listview ;
 
         // 리스트뷰 참조 및 Adapter달기
@@ -59,9 +59,7 @@ public class myPetActivity extends AppCompatActivity {
         GetData task = new GetData("http://hyunjun0315.dothome.co.kr/php/petList.php?",null);
         task.execute();
 
-//        adapter.addItem("초코","Female","5세","3.8kg") ;
-//        adapter.addItem("흰둥이","Male","3세","1.7kg") ;
-//        adapter.addItem("뽀삐","Female","2세","2.8kg") ;
+
 
         btnAddPet.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -69,6 +67,7 @@ public class myPetActivity extends AppCompatActivity {
                 Intent intent = new Intent(myPetActivity.this, newPetActivity.class);
                 intent.putExtra("userID",ID);
                 startActivity(intent);
+                finish();
             }
         });
     }
