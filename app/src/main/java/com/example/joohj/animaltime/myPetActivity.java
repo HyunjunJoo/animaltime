@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -55,6 +56,33 @@ public class myPetActivity extends AppCompatActivity {
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.petlist);
         listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                petListViewItem item = (petListViewItem) parent.getItemAtPosition(position) ;
+
+
+                // 수정 intent로 넘겨줄 값들
+                String petID = item.getpetID();
+                String petName = item.getName();
+                String petSex = item.getSex();
+                String petAge = item.getAge();
+                String petWeight = item.getWeight();
+
+                Intent intent = new Intent(myPetActivity.this, editPetActivity.class);
+                intent.putExtra("userID",ID);
+                intent.putExtra("petID",petID);
+                intent.putExtra("petName",petName);
+                intent.putExtra("petSex",petSex);
+                intent.putExtra("petAge",petAge);
+                intent.putExtra("petWeight",petWeight);
+                startActivity(intent);
+
+                Log.d("TAG", "pet Info : " + petID + petName + petSex + petAge + petWeight);
+
+            }
+        });
 
         GetData task = new GetData("http://hyunjun0315.dothome.co.kr/php/petList.php?",null);
         task.execute();
@@ -139,14 +167,19 @@ public class myPetActivity extends AppCompatActivity {
 
                     JSONObject jObject = results.getJSONObject(i);
 
+                    String pet_id = jObject.getString("pet_id");
                     String pet_name = jObject.getString("name");
                     String pet_sex = jObject.getString("sex");
                     String pet_age = jObject.getString("age");
                     String pet_weight = jObject.getString("weight");
 
+                    Log.d("TAG", "pet_id : " + pet_id);
                     Log.d("TAG", "petname : " + pet_name);
+                    Log.d("TAG", "sex : " + pet_sex);
+                    Log.d("TAG", "age : " + pet_age);
+                    Log.d("TAG", "weight : " + pet_weight);
 
-                    adapter.addItem(pet_name,pet_sex,pet_age,pet_weight) ;
+                    adapter.addItem(pet_id, pet_name, pet_sex, pet_age, pet_weight) ;
 
                 }
 

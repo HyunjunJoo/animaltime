@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="반려동물 정보 수정"
+        android:textColor= "#000000"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_margin="10dp"/>
+
+    <EditText
+        android:id="@+id/pet_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="반려동물의 이름을 입력하세요"
+        />
+
+    <EditText
+        android:id="@+id/pet_sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="성별을 입력하세요"
+        />
+
+    <EditText
+        android:id="@+id/pet_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="나이를 입력하세요"
+        />
+    <EditText
+        android:id="@+id/pet_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="몸무게를 입력하세요"
+        />
+
+    <Button
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:adjustViewBounds="true"
+        android:text="수정"
+        android:onClick="onClicked"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        />
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:text="삭제"
+        android:onClick="onClicked"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        />
+
+</LinearLayout>

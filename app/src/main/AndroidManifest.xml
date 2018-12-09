@@ -30,6 +30,7 @@
         <activity android:name=".CalendarActivity"></activity>
         <activity android:name=".myPetActivity" />
         <activity android:name=".newPetActivity" />
+        <activity android:name=".editPetActivity" />
     </application>
 
 </manifest>

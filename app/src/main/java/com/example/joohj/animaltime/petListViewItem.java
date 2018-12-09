@@ -1,12 +1,15 @@
 package com.example.joohj.animaltime;
 
 public class petListViewItem {
+    private String petIDStr;
     private String nameStr ;
     private String sexStr ;
     private String ageStr ;
     private String weightStr ;
 
-
+    public void setPetID(String petID) {
+        petIDStr = petID ;
+    }
     public void setName(String name) {
         nameStr = name ;
     }
@@ -21,6 +24,9 @@ public class petListViewItem {
     }
 
 
+    public String getpetID() {
+        return this.petIDStr ;
+    }
     public String getName() {
         return this.nameStr ;
     }

@@ -68,9 +68,10 @@ public class petListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String name, String sex, String age, String weight) {
+    public void addItem(String petID, String name, String sex, String age, String weight) {
         petListViewItem item = new petListViewItem();
 
+        item.setPetID(petID);
         item.setName(name);
         item.setSex(sex);
         item.setAge(age);
