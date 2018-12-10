@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/diarylist_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="제목" />
+
+    <ImageView
+        android:id="@+id/diarylist_image"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"/>
+
+    <TextView
+        android:id="@+id/diarylist_context"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내용" />
+
+    <TextView
+        android:id="@+id/diarylist_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="작성시간" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/diarylist_modify_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수정" />
+
+        <Button
+            android:id="@+id/diarylist_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/diarylist_prev_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이전" />
+
+        <Button
+            android:id="@+id/diarylist_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다음" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/diarylist_new_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="작성" />
+
+
+</LinearLayout>
