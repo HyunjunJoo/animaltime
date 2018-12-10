@@ -63,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 userID = getIntent();
                 String ID = userID.getStringExtra("userID");
 
-                userID = new Intent(getApplicationContext(), WeatherActivity.class);
-                startActivity(userID);
+                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                intent.putExtra("userID", ID);
+                startActivity(intent);
             }
         });
 

@@ -40,6 +40,7 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView sky;
     private ImageView rain;
     private Button walk;
+    private Button walk_list;
 
     public static StringBuilder sb;
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1001;
@@ -94,11 +95,27 @@ public class WeatherActivity extends AppCompatActivity {
             }
         }
 
+        //user id 가져오기
+        Intent userID;
+        userID = getIntent();
+        String ID = userID.getStringExtra("userID");
+
         walk = (Button)findViewById(R.id.walk_button);
         walk.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WalkRegistrationActivity.class);
+                intent.putExtra("userID", ID);
+                startActivity(intent);
+            }
+        });
+
+        walk_list = (Button)findViewById(R.id.walk_list_button);
+        walk_list.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WalkListActivity.class);
+                intent.putExtra("userID", ID);
                 startActivity(intent);
             }
         });

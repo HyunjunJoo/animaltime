@@ -42,8 +42,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/walk_button"
-        android:text="산책"
+        android:text="산책 등록"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/walk_list_button"
+        android:text="산책 조회"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/walk_button"/>
 
 </android.support.constraint.ConstraintLayout>
