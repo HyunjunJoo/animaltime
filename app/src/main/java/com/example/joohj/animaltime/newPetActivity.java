@@ -56,7 +56,7 @@ public class newPetActivity extends AppCompatActivity {
                         && containsWhiteSpace(strWeight) == true) {
                     insertToDatabase(strID, strName, strSex, strAge, strWeight);
                     Intent intent = new Intent(newPetActivity.this, myPetActivity.class);
-                    intent.putExtra("userID",ID);
+                    intent.putExtra("userID",strID);
                     finish();
                 } else {
                     Toast.makeText(newPetActivity.this, "내용을 모두 채워주세요. 공백이 포함될수는 없습니다.", Toast.LENGTH_SHORT).show();
