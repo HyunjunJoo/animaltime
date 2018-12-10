@@ -31,7 +31,7 @@
         <activity android:name=".WeatherActivity" />
         <activity android:name=".WalkRegistrationActivity" />
         <activity android:name=".DiaryActivity" />
-        <activity android:name=".Diarylist">
+        <activity android:name=".Diarylist"/>
         <activity android:name=".WalkListActivity" />
         <activity android:name=".WalkModifyActivity"></activity>
 
