@@ -9,48 +9,66 @@
         android:id="@+id/diarylist_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20pt"
         android:text="제목" />
 
     <ImageView
         android:id="@+id/diarylist_image"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
         android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/diarylist_context"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="10pt"
         android:text="내용" />
 
     <TextView
         android:id="@+id/diarylist_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="right"
         android:text="작성시간" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <Button
             android:id="@+id/diarylist_modify_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_toStartOf="@+id/diarylist_delete_button"
+            android:layout_toLeftOf="@+id/diarylist_delete_button"
             android:text="수정" />
 
         <Button
             android:id="@+id/diarylist_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:layout_toStartOf="@+id/diarylist_new_button"
+            android:layout_toLeftOf="@+id/diarylist_new_button"
             android:text="삭제" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <Button
+            android:id="@+id/diarylist_new_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:text="작성" />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <Button
             android:id="@+id/diarylist_prev_button"
@@ -62,16 +80,13 @@
             android:id="@+id/diarylist_next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
             android:text="다음" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/diarylist_new_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="작성" />
+
 
 
 </LinearLayout>
