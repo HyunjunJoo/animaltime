@@ -1,5 +1,6 @@
 package com.example.joohj.animaltime;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -55,15 +56,13 @@ import java.util.List;
 
 public class DiaryActivity extends AppCompatActivity {
 
-    Button upload_button, save_button, test_button;
+    Button upload_button, save_button, cancel_button;
     String imagename = null;
     EditText context, title;
-    ImageView test_imageview;
+
     private StorageReference mImageStorageRef;
     private String photoUrl = null;
     private String diary_id = null;
-    private String diary_data = null;
-    private List<Diary> diary_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +74,33 @@ public class DiaryActivity extends AppCompatActivity {
         context = (EditText)findViewById(R.id.diary_context);
         upload_button = (Button)findViewById(R.id.diary_upload_button);
         save_button = (Button)findViewById(R.id.diary_save_button);
-        test_button = (Button)findViewById(R.id.diary_test_button);
-        diary_list = new ArrayList<Diary>(100);
-        test_imageview = (ImageView)findViewById(R.id.diary_image);
+        cancel_button = (Button)findViewById(R.id.diary_cancel_button);
 
         Intent userID;
         userID = getIntent();
         String user_id = userID.getStringExtra("userID");
+
+        Intent data;
+        data = getIntent();
+        String intent_diary_id = data.getStringExtra("diary_id");
+        String intent_title = data.getStringExtra("title");
+        String intent_context = data.getStringExtra("context");
+        String intent_url = data.getStringExtra("url");
+
+        title.setText(intent_title);
+        context.setText(intent_context);
+        photoUrl = intent_url;
+        diary_id = intent_diary_id;
+
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Diarylist.class);
+                intent.putExtra("userID", user_id);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,113 +115,71 @@ public class DiaryActivity extends AppCompatActivity {
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String date = getDate();
-                diary_id = date.substring(0, 10) + date.substring(11) + user_id;
-
-                insertToDatabase(diary_id, user_id, title.getText().toString(), context.getText().toString(), date, photoUrl);
-            }
-        });
-
-        test_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        Looper.prepare();
-                        diary_data = get_diary_from_database(user_id);
-                        parsing_diary(diary_list, diary_data);
-                        new LoadImage().execute(diary_list.get(0).url);
-                        Looper.loop();
-                    }
-                }).start();
+                if (diary_id == null) {
+                    String date = getDate();
+                    diary_id = date.substring(0, 10) + date.substring(11) + user_id;
+                    insertToDatabase(diary_id, user_id, title.getText().toString(), context.getText().toString(), date, photoUrl);
+                    Intent intent = new Intent(getApplicationContext(), Diarylist.class);
+                    intent.putExtra("userID", user_id);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    new Thread(new Runnable() {
+                        public void run() {
+                            Looper.prepare();
+                            modify_diary_from_database(diary_id,  title.getText().toString(), context.getText().toString(), photoUrl);
+                            Intent intent = new Intent(getApplicationContext(), Diarylist.class);
+                            intent.putExtra("userID", user_id);
+                            startActivity(intent);
+                            finish();
+                            Looper.loop();
+                        }
+                    }).start();
+                }
             }
         });
 
     }
-    private class LoadImage extends AsyncTask<String, String, Bitmap>{
-        ProgressDialog pDialog;
-        Bitmap mBitmap;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(DiaryActivity.this);
-            pDialog.setMessage("이미지 로딩중입니다...");
-            pDialog.show();
-        }
 
-        protected Bitmap doInBackground(String... args) {
-            try {
-                mBitmap = BitmapFactory
-                        .decodeStream((InputStream) new URL(args[0])
-                                .getContent());
+    private void modify_diary_from_database(String diary_id, String title, String context, String url){
+        HttpPost httppost;
+        HttpClient httpclient;
+        List<NameValuePair> nameValuePairs;
+        HttpResponse response;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return mBitmap;
-        }
+        try {
 
-        protected void onPostExecute(Bitmap image) {
+            httpclient = new DefaultHttpClient();
+            httppost = new HttpPost("http://hyunjun0315.dothome.co.kr/php/diary_modify.php");
 
-            if (image != null) {
-                test_imageview.setImageBitmap(image);
-                pDialog.dismiss();
+            nameValuePairs = new ArrayList<NameValuePair>(4);
+
+            nameValuePairs.add(new BasicNameValuePair("diary_id", diary_id));
+            nameValuePairs.add(new BasicNameValuePair("title", title));
+            nameValuePairs.add(new BasicNameValuePair("context", context));
+            nameValuePairs.add(new BasicNameValuePair("url", url));
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            response = httpclient.execute(httppost);
+
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            final String strResponse = httpclient.execute(httppost, responseHandler);
+
+            //로그인 성공했을 때 echo로 값
+            if (strResponse.equalsIgnoreCase("1")) {
+                //return strResponse;
 
             } else {
-                pDialog.dismiss();
-                Toast.makeText(DiaryActivity.this, "이미지가 존재하지 않습니다.",
-                        Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(DiaryActivity.this, "저장 에러: " + strResponse, Toast.LENGTH_SHORT).show();
+                return;
             }
         }
-    }
-    private void parsing_diary(List<Diary> diary_list, String diary_data){
-
-        String user_id = null;
-        String diary_id = null;
-        String title = null;
-        String context = null;
-        String date = null;
-        String url = null;
-
-        String temp = null;
-
-        int flag = 0;
-        int start_idx = 0;
-
-        for (int i = 0; i < diary_data.length(); ++i){
-            if (diary_data.charAt(i) == '\n'){
-                temp = diary_data.substring(start_idx, i);
-                start_idx = i + 1;
-
-                switch (flag){
-                    case 0:
-                        diary_id = temp;
-                        break;
-                    case 1:
-                        user_id = temp;
-                        break;
-                    case 2:
-                        title = temp;
-                        break;
-                    case 3:
-                        context = temp;
-                        break;
-                    case 4:
-                        date = temp;
-                        break;
-                    case 5:
-                        url = temp;
-                        break;
-                }
-                if (flag == 5){
-                    flag = 0;
-                    Diary diary = new Diary(diary_id, user_id, title, context, date, url);
-                    diary_list.add(diary);
-                }else{
-                    flag++;
-                }
-            }
+        catch(Exception e)
+        {
+            //Toast.makeText(Diarylist.this, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 
@@ -246,6 +223,7 @@ public class DiaryActivity extends AppCompatActivity {
         });
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -261,6 +239,7 @@ public class DiaryActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     photoUrl = downloadUri.toString();
+                    Toast.makeText(DiaryActivity.this,"image uploaded",Toast.LENGTH_LONG).show();
                 } else {
                     // Handle failures
                     // ...
@@ -334,43 +313,5 @@ public class DiaryActivity extends AppCompatActivity {
         }
         InsertData task = new InsertData();
         task.execute(diary_id, user_id, title, context, date, url);
-    }
-
-    private String get_diary_from_database(String user_id) {
-        HttpPost httppost;
-        HttpClient httpclient;
-        List<NameValuePair> nameValuePairs;
-        HttpResponse response;
-
-        try {
-
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost("http://hyunjun0315.dothome.co.kr/php/diary_download.php");
-
-            nameValuePairs = new ArrayList<NameValuePair>(1);
-
-            nameValuePairs.add(new BasicNameValuePair("user_id", user_id));
-
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            response = httpclient.execute(httppost);
-
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String strResponse = httpclient.execute(httppost, responseHandler);
-
-            //로그인 성공했을 때 echo로 값
-            if (!strResponse.equalsIgnoreCase(user_id)) {
-                return strResponse;
-
-            } else {
-                Toast.makeText(DiaryActivity.this, "다이어리가 없습니다.", Toast.LENGTH_SHORT).show();
-                return null;
-            }
-        }
-        catch(Exception e)
-        {
-            Toast.makeText(DiaryActivity.this, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            return null;
-        }
     }
 }

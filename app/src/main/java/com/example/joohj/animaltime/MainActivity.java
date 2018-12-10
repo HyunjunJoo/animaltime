@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         btnJournal.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Diarylist.class);
                 intent.putExtra("userID",ID);
                 startActivity(intent);
             }
