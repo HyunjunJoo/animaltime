@@ -95,6 +95,9 @@ public class DiaryActivity extends AppCompatActivity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Diarylist.class);
+                intent.putExtra("userID", user_id);
+                startActivity(intent);
                 finish();
             }
         });
@@ -116,6 +119,9 @@ public class DiaryActivity extends AppCompatActivity {
                     String date = getDate();
                     diary_id = date.substring(0, 10) + date.substring(11) + user_id;
                     insertToDatabase(diary_id, user_id, title.getText().toString(), context.getText().toString(), date, photoUrl);
+                    Intent intent = new Intent(getApplicationContext(), Diarylist.class);
+                    intent.putExtra("userID", user_id);
+                    startActivity(intent);
                     finish();
                 }
                 else{
@@ -217,6 +223,7 @@ public class DiaryActivity extends AppCompatActivity {
         });
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -232,6 +239,7 @@ public class DiaryActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     photoUrl = downloadUri.toString();
+                    Toast.makeText(DiaryActivity.this,"image uploaded",Toast.LENGTH_LONG).show();
                 } else {
                     // Handle failures
                     // ...

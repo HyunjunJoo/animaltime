@@ -137,6 +137,7 @@ public class Diarylist extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
                 intent.putExtra("userID", user_id);
                 startActivity(intent);
+                finish();
             }
         });
 
