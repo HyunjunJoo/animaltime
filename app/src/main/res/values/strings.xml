@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">animalTime</string>
+    <string name="sky_image">Current state of sky</string>
+    <string name="rain_image">Current state of weather</string>
 </resources>
