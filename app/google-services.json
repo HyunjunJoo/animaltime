@@ -8,50 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:707521930216:android:3645a54f3b145f6e",
-        "android_client_info": {
-          "package_name": "app1.project.mobile.diarypart"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "707521930216-lv60e4vmjejpu9nrnaqcha6eol5ksf6v.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "app1.project.mobile.diarypart",
-            "certificate_hash": "cd23da4978294f4f3ebda353109c3ac38b8d8e0c"
-          }
-        },
-        {
-          "client_id": "707521930216-4nsj8vg9kp47id0a6s45057efi950imj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDqt4OzBpgtH7cblTd80hK46FdqHOHhKVI"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "707521930216-4nsj8vg9kp47id0a6s45057efi950imj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:707521930216:android:e8e63a2603805df2",
         "android_client_info": {
           "package_name": "com.example.joohj.animaltime"
