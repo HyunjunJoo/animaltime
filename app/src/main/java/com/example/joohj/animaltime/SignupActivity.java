@@ -58,6 +58,7 @@ public class SignupActivity extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
+                loading = null;
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
             }
 

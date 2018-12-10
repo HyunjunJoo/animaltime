@@ -27,6 +27,13 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />
+
+        <activity android:name=".myPageActivity" />
+
+        <activity android:name=".myPetActivity" />
+        <activity android:name=".newPetActivity" />
+        <activity android:name=".editPetActivity" />
+
         <activity android:name=".CalendarActivity" />
         <activity android:name=".WeatherActivity" />
         <activity android:name=".WalkRegistrationActivity" />
@@ -36,6 +43,7 @@
         <activity android:name=".WalkModifyActivity"></activity>
         <activity android:name=".AddNoteActivity" />
         <activity android:name=".NotePreviewActivity"></activity>
+
     </application>
 
 </manifest>
