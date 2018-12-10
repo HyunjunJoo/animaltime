@@ -34,7 +34,8 @@
         <activity android:name=".Diarylist"/>
         <activity android:name=".WalkListActivity" />
         <activity android:name=".WalkModifyActivity"></activity>
-
+        <activity android:name=".AddNoteActivity" />
+        <activity android:name=".NotePreviewActivity"></activity>
     </application>
 
 </manifest>
