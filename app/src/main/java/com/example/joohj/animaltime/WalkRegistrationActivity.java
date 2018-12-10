@@ -75,22 +75,27 @@ public class WalkRegistrationActivity extends AppCompatActivity {
                     //state[i] = false;
                 }
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(WalkRegistrationActivity.this);
-                dialog.setTitle("반려동물을 선택하세요")
-                        .setSingleChoiceItems( items, 0,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        selectedIndex[0] = which;
-                                    }
-                        } )
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(WalkRegistrationActivity.this, items[selectedIndex[0]], Toast.LENGTH_SHORT).show();
-                                pet_name.setText(items[selectedIndex[0]]);
-                                //selected_index = selectedIndex[0];
-                            } }).create().show();
+                if(items.length == 0) {
+                    Toast.makeText(WalkRegistrationActivity.this, "등록된 반려동물이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(WalkRegistrationActivity.this);
+                    dialog.setTitle("반려동물을 선택하세요")
+                            .setSingleChoiceItems( items, 0,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            selectedIndex[0] = which;
+                                        }
+                                    } )
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(WalkRegistrationActivity.this, items[selectedIndex[0]], Toast.LENGTH_SHORT).show();
+                                    pet_name.setText(items[selectedIndex[0]]);
+                                    //selected_index = selectedIndex[0];
+                                } }).create().show();
+                }
             }
         });
 
@@ -126,17 +131,19 @@ public class WalkRegistrationActivity extends AppCompatActivity {
                content.put("date", date);
                content.put("time", time);
                content.put("user_id", ID);
-               content.put("pet_id", Integer.parseInt(pet_id));
-               InsertWalk networkTask = new InsertWalk(url, content);
-               networkTask.execute();
+
+               if(pet_id == null) {
+                   Toast.makeText(WalkRegistrationActivity.this, "선택된 반려동물이 없습니다.", Toast.LENGTH_SHORT).show();
+               }
+               else {
+                   content.put("pet_id", Integer.parseInt(pet_id));
+                   InsertWalk networkTask = new InsertWalk(url, content);
+                   networkTask.execute();
+               }
 
                finish();
            }
         });
-    }
-
-    public void sendRequest() {
-
     }
 
     public class InsertWalk extends AsyncTask<Void, Void, String> {

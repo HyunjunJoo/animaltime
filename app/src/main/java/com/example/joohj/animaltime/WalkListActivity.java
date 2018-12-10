@@ -78,38 +78,43 @@ public class WalkListActivity extends AppCompatActivity {
                     //state[i] = false;
                 }
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(WalkListActivity.this);
-                dialog.setTitle("반려동물을 선택하세요")
-                        .setSingleChoiceItems( items, 0,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        selectedIndex[0] = which;
+                if(items.length == 0) {
+                    Toast.makeText(WalkListActivity.this, "등록된 반려동물이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(WalkListActivity.this);
+                    dialog.setTitle("반려동물을 선택하세요")
+                            .setSingleChoiceItems( items, 0,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            selectedIndex[0] = which;
+                                        }
+                                    } )
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(WalkListActivity.this, items[selectedIndex[0]], Toast.LENGTH_SHORT).show();
+                                    pet_name.setText(items[selectedIndex[0]]);
+
+                                    //반려동물 선택 후 해당 산책 기록 보여주기
+                                    String pet_id = null;
+                                    for(int i = 0; i < pets.size(); i++) {
+                                        String temp = pets.get(i).getName();
+                                        if(temp.equals(pet_name.getText())) {
+                                            pet_id = pets.get(i).getPet_id();
+                                        }
                                     }
-                                } )
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(WalkListActivity.this, items[selectedIndex[0]], Toast.LENGTH_SHORT).show();
-                                pet_name.setText(items[selectedIndex[0]]);
 
-                                //반려동물 선택 후 해당 산책 기록 보여주기
-                                String pet_id = null;
-                                for(int i = 0; i < pets.size(); i++) {
-                                    String temp = pets.get(i).getName();
-                                    if(temp.equals(pet_name.getText())) {
-                                        pet_id = pets.get(i).getPet_id();
-                                    }
-                                }
+                                    ContentValues content = new ContentValues();
+                                    content.put("pet_id", Integer.parseInt(pet_id));
+                                    content.put("user_id", ID);
 
-                                ContentValues content = new ContentValues();
-                                content.put("pet_id", Integer.parseInt(pet_id));
-                                content.put("user_id", ID);
+                                    SelectWalk selectWalk = new SelectWalk("http://hyunjun0315.dothome.co.kr/php/selectWalk.php", content);
+                                    selectWalk.execute();
 
-                                SelectWalk selectWalk = new SelectWalk("http://hyunjun0315.dothome.co.kr/php/selectWalk.php", content);
-                                selectWalk.execute();
-
-                            } }).create().show();
+                                } }).create().show();
+                }
             }
         });
 

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "707521930216-ol93u1k6k3i4i0fdnpe47m7u31netehg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.joohj.animaltime",
+            "certificate_hash": "24cdd73662ac58d026ce8fb1b3719afe3d8fa188"
+          }
+        },
+        {
           "client_id": "707521930216-4nsj8vg9kp47id0a6s45057efi950imj.apps.googleusercontent.com",
           "client_type": 3
         }
