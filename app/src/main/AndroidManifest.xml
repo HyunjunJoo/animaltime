@@ -28,7 +28,9 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".DiaryActivity" />
-        <activity android:name=".Diarylist"></activity>
+        <activity android:name=".Diarylist" />
+        <activity android:name=".AddNoteActivity" />
+        <activity android:name=".NotePreviewActivity"></activity>
     </application>
 
 </manifest>
