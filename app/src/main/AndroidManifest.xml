@@ -27,23 +27,19 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />
-
         <activity android:name=".myPageActivity" />
-
         <activity android:name=".myPetActivity" />
         <activity android:name=".newPetActivity" />
         <activity android:name=".editPetActivity" />
-
         <activity android:name=".CalendarActivity" />
         <activity android:name=".WeatherActivity" />
         <activity android:name=".WalkRegistrationActivity" />
         <activity android:name=".DiaryActivity" />
         <activity android:name=".Diarylist"/>
         <activity android:name=".WalkListActivity" />
-        <activity android:name=".WalkModifyActivity"></activity>
-        <activity android:name=".AddNoteActivity" />
-        <activity android:name=".NotePreviewActivity"></activity>
-
+        <activity android:name=".WalkModifyActivity"/>
+        <receiver android:name=".Broadcast" />
+        <activity android:name=".CalendarList"></activity>
     </application>
 
 </manifest>

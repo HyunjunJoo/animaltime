@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <ListView
+        android:id="@+id/calendar_listView"
+        android:layout_width="match_parent"
+        android:layout_height="340dp" />
+
+    <EditText
+        android:id="@+id/calendar_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="내용"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/calendar_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="시간"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/alarm_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="알람"
+        android:inputType="textPersonName" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:id="@+id/calendar_modify_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_toStartOf="@+id/calendar_delete_button"
+            android:layout_toLeftOf="@+id/calendar_delete_button"
+            android:background="@android:color/transparent"
+            android:text="수정" />
+
+        <Button
+            android:id="@+id/calendar_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_toStartOf="@+id/calendar_new_button"
+            android:layout_toLeftOf="@+id/calendar_new_button"
+            android:background="@android:color/transparent"
+            android:text="삭제" />
+
+        <Button
+            android:id="@+id/calendar_new_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="작성" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
