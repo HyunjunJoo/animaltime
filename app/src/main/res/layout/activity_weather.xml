@@ -38,6 +38,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rain_image"/>
 
+    <ListView
+        android:id="@+id/progress_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/walk_button"
+        app:layout_constraintTop_toBottomOf="@+id/sky_image" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
