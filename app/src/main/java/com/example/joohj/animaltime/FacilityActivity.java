@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -151,10 +154,17 @@ public class FacilityActivity extends AppCompatActivity
 
                     String markerSnippet = getCurrentAddress(latLng);
 
+                    //검색시에 나오는 아이콘 설정
+                    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.marker);
+                    Bitmap b=bitmapdraw.getBitmap();
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 180, 180, false);
+
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latLng);
                     markerOptions.title(place.getName());
                     markerOptions.snippet(markerSnippet);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+
                     Marker item = mGoogleMap.addMarker(markerOptions);
                     previous_marker.add(item);
 
@@ -411,11 +421,11 @@ public class FacilityActivity extends AppCompatActivity
                 String name = marker.getTitle();
                 String registration_num = marker.getSnippet();
                 String address = getCompleteAddressString(marker.getPosition().latitude,marker.getPosition().longitude);//위도 경도임
+
                 //String add = getCompleteAddressString(marker.getPosition().latitude,marker.getPosition().longitude)
 
-
                 insertFacilityInfoToDatabase(facility_id, name, registration_num, address);
-                Toast.makeText(FacilityActivity.this, "즐겨찾기에 추가됩니당.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FacilityActivity.this, "즐겨찾기에 추가됩니다.", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -584,12 +594,15 @@ public class FacilityActivity extends AppCompatActivity
 
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+
+
+
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentLatLng);
         markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
-
 
         currentMarker = mGoogleMap.addMarker(markerOptions);
 
@@ -615,7 +628,6 @@ public class FacilityActivity extends AppCompatActivity
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
-
         if (currentMarker != null) currentMarker.remove();
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -624,6 +636,7 @@ public class FacilityActivity extends AppCompatActivity
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
         currentMarker = mGoogleMap.addMarker(markerOptions);
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
