@@ -6,14 +6,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCegY8qKNig1EnWgeUgvCqVAV3cFA5yTK0" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -27,6 +33,7 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".FacilityActivity" />
         <activity android:name=".myPageActivity" />
         <activity android:name=".myPetActivity" />
         <activity android:name=".newPetActivity" />
