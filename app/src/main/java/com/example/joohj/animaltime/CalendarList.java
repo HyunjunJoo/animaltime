@@ -1,13 +1,21 @@
 package com.example.joohj.animaltime;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -40,6 +48,7 @@ public class CalendarList extends AppCompatActivity {
     ListView listView;
 
     List<Calendar> calendar_list = new ArrayList<Calendar>(24);
+    List<String> calendar_content_time_list = new ArrayList<String>(24);
     private ArrayAdapter adapter;
     private int calendar_list_size = 0;
     private int idx = 0;
@@ -57,7 +66,7 @@ public class CalendarList extends AppCompatActivity {
         new_button = (Button) findViewById(R.id.calendar_new_button);
         content = (TextView) findViewById(R.id.calendar_content);
         time = (TextView) findViewById(R.id.calendar_time);
-        alarm_check = (TextView) findViewById(R.id.calendar_time);
+        alarm_check = (TextView) findViewById(R.id.alarm_check);
         listView = (ListView) findViewById(R.id.calendar_listView);
 
         Intent userID;
@@ -78,23 +87,194 @@ public class CalendarList extends AppCompatActivity {
                 Looper.loop();
             }
         }).start();
-        Toast.makeText(getApplicationContext(), calendar_data, Toast.LENGTH_LONG).show();
-        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_single_choice, calendar_list);
-        listView.setAdapter(adapter);
+//        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_selectable_list_item, calendar_content_time_list);
+//        listView.setAdapter(adapter);
+
 
         new_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertToDatabase("1", user_id, calendar_date, time.getText().toString(), content.getText().toString(), alarm_check.getText().toString());
+                insertToDatabase(String.valueOf(System.currentTimeMillis()) + user_id, user_id, calendar_date, time.getText().toString(), content.getText().toString(), alarm_check.getText().toString());
+                new Thread(new Runnable() {
+                    public void run() {
+                        Looper.prepare();
+                        calendar_data = get_calendar_from_database(user_id, calendar_date);
+                        if (calendar_data == null)
+                            return;
+                        parsing_calendar(calendar_list, calendar_data);
+                        setting_new_calendar(idx);
+                        Looper.loop();
+                    }
+                }).start();
+
+                if(alarm_check.getText().toString().charAt(0) == 'o') {
+                    // 알람 기능 구현
+                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+
+                    Intent intent = new Intent(getApplicationContext(), Broadcast.class);
+
+                    PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+
+                    System.out.println(calendar_date.substring(0, 4)+ "\n" + calendar_date.substring(4, 6) + "\n" + calendar_date.substring(6, 8));
+                    java.util.Calendar calendar = java.util.Calendar.getInstance();
+                    calendar.set(Integer.parseInt(calendar_date.substring(0, 4)),
+                            Integer.parseInt(calendar_date.substring(4, 6)),
+                            Integer.parseInt(calendar_date.substring(6, 8)),
+                            Integer.parseInt(time.getText().toString().substring(0, 2)) - 1, Integer.parseInt(time.getText().toString().substring(3, 5)), 0);
+                    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+                }
+
+
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                System.out.println(String.valueOf(position));
+
+
+                content.setText(calendar_list.get(position).calendar_content);
+                time.setText(calendar_list.get(position).calendar_time);
+                alarm_check.setText(calendar_list.get(position).alarm_check);
+
+
+                modify_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Thread(new Runnable() {
+                            public void run() {
+                                Looper.prepare();
+                                modify_calendar_from_database(position, time.getText().toString(), content.getText().toString(), alarm_check.getText().toString());
+                                setting_new_calendar(idx);
+                                Looper.loop();
+                            }
+                        }).start();
+                    }
+                });
+
+                delete_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Thread(new Runnable() {
+                            public void run() {
+                                Looper.prepare();
+                                delete_calendar_from_database(position);
+                                calendar_content_time_list.remove(position);
+                                calendar_list.remove(position);
+                                calendar_list_size--;
+                                if (calendar_list_size == 0)
+                                    finish();
+                                else{
+                                    if (idx > 0)
+                                        --idx;
+                                }
+                                setting_new_calendar(idx);
+                                Looper.loop();
+                            }
+                        }).start();
+                    }
+                });
+            }
+        });
+
+
     }
+
+    private void modify_calendar_from_database(int listIdx, String time, String content, String alarm_check) {
+        HttpPost httppost;
+        HttpClient httpclient;
+        List<NameValuePair> nameValuePairs;
+        HttpResponse response;
+
+        try {
+            System.out.println(String.valueOf(calendar_list.get(listIdx).calendar_no));
+            httpclient = new DefaultHttpClient();
+            httppost = new HttpPost("http://hyunjun0315.dothome.co.kr/php/calendar_modify.php");
+
+            nameValuePairs = new ArrayList<NameValuePair>(4);
+
+            nameValuePairs.add(new BasicNameValuePair("calendar_no", calendar_list.get(listIdx).calendar_no));
+            nameValuePairs.add(new BasicNameValuePair("calendar_time", time));
+            nameValuePairs.add(new BasicNameValuePair("calendar_content",content));
+            nameValuePairs.add(new BasicNameValuePair("alarm_check", alarm_check));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            response = httpclient.execute(httppost);
+
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            final String strResponse = httpclient.execute(httppost, responseHandler);
+//            System.out.println(response + "\n" + strResponse);
+
+            calendar_content_time_list.set(listIdx, content + "\n" + time);
+            calendar_list.get(listIdx).calendar_time = time;
+            calendar_list.get(listIdx).calendar_content = content;
+            calendar_list.get(listIdx).alarm_check = alarm_check;
+
+            //로그인 성공했을 때 echo로 값
+            if (!strResponse.equalsIgnoreCase("1")) {
+                Toast.makeText(CalendarList.this, "수정 실패", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(CalendarList.this, "수정 성공", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            //Toast.makeText(Diarylist.this, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void delete_calendar_from_database(int listIdx){
+        HttpPost httppost;
+        HttpClient httpclient;
+        List<NameValuePair> nameValuePairs;
+        HttpResponse response;
+
+        try {
+
+            httpclient = new DefaultHttpClient();
+            httppost = new HttpPost("http://hyunjun0315.dothome.co.kr/php/calendar_delete.php");
+
+            nameValuePairs = new ArrayList<NameValuePair>(1);
+
+            nameValuePairs.add(new BasicNameValuePair("calendar_no", calendar_list.get(listIdx).calendar_no));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+//            Toast.makeText(CalendarList.this, calendar_list.get(listIdx).calendar_no, Toast.LENGTH_SHORT).show();
+            response = httpclient.execute(httppost);
+
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            final String strResponse = httpclient.execute(httppost, responseHandler);
+//            System.out.println(response + "\n" + strResponse);
+
+
+            //로그인 성공했을 때 echo로 값
+            if (!strResponse.equalsIgnoreCase("1")) {
+                Toast.makeText(CalendarList.this, "실패.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(CalendarList.this, "일정 삭제", Toast.LENGTH_SHORT).show();
+
+            }
+        } catch (Exception e) {
+            //Toast.makeText(Diarylist.this, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void setting_new_calendar(int idx) {
         new Thread(new Runnable() {
             public void run() {
                 Looper.prepare();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_selectable_list_item, calendar_content_time_list);
+                        listView.setAdapter(adapter);
+                    }
+                });
+
                 Looper.loop();
             }
         }).start();
@@ -111,16 +291,17 @@ public class CalendarList extends AppCompatActivity {
             httpclient = new DefaultHttpClient();
             httppost = new HttpPost("http://hyunjun0315.dothome.co.kr/php/calendar_download.php");
 
-            nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs = new ArrayList<NameValuePair>(2);
 
             nameValuePairs.add(new BasicNameValuePair("user_id", user_id));
-//            nameValuePairs.add(new BasicNameValuePair("calendar_date", calendar_date));
+            nameValuePairs.add(new BasicNameValuePair("calendar_date", calendar_date));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             response = httpclient.execute(httppost);
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String strResponse = httpclient.execute(httppost, responseHandler);
+            System.out.println(strResponse);
 
             //로그인 성공했을 때 echo로 값
             if (!strResponse.equalsIgnoreCase(user_id)) {
@@ -203,6 +384,9 @@ public class CalendarList extends AppCompatActivity {
         task.execute(calendar_no, user_id, calendar_date, calendar_time, calendar_content, alarm_check);
     }
 
+
+
+
     private void parsing_calendar(List<Calendar> calendar_list, String calendar_data) {
 
         String calendar_no = null;
@@ -213,6 +397,10 @@ public class CalendarList extends AppCompatActivity {
         String alarm_check = null;
 
         String temp = null;
+
+        calendar_list.clear();;
+        calendar_content_time_list.clear();
+        calendar_list_size = 0;
 
         int flag = 0;
         int start_idx = 0;
@@ -239,13 +427,14 @@ public class CalendarList extends AppCompatActivity {
                         calendar_content = temp;
                         break;
                     case 5:
-                        alarm_check = temp;
+                        alarm_check = temp.substring(0, temp.length() - 1);
                         break;
                 }
                 if (flag == 5) {
                     flag = 0;
                     Calendar calendar = new Calendar(calendar_no, user_id, calendar_date, calendar_time, calendar_content, alarm_check);
                     calendar_list_size++;
+                    calendar_content_time_list.add(calendar_content + "\n" + calendar_time);
                     calendar_list.add(calendar);
                 } else {
                     flag++;

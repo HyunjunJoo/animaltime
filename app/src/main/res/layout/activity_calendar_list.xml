@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="알람"
+        android:hint="알람 (o, x)"
         android:inputType="textPersonName" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
