@@ -8,8 +8,8 @@
     <TextView
         android:id="@+id/diarylist_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20pt"
+        android:layout_height="70dp"
+        android:textSize="15pt"
         android:text="제목" />
 
     <ImageView
@@ -21,8 +21,9 @@
     <TextView
         android:id="@+id/diarylist_context"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="10pt"
+        android:layout_height="120dp"
+        android:maxLength="1500"
+        android:textSize="8pt"
         android:text="내용" />
 
     <TextView
