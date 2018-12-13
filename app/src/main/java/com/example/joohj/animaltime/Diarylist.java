@@ -67,10 +67,11 @@ public class Diarylist extends AppCompatActivity {
             public void run() {
                 Looper.prepare();
                 diary_data = get_diary_from_database(user_id);
-                if (diary_data == null)
+                if (diary_data != null) {
+                    parsing_diary(diary_list, diary_data);
+                    setting_new_diary(idx);
                     return;
-                parsing_diary(diary_list, diary_data);
-                setting_new_diary(idx);
+                }
                 Looper.loop();
             }
         }).start();
@@ -101,6 +102,8 @@ public class Diarylist extends AppCompatActivity {
                 new Thread(new Runnable() {
                     public void run() {
                         Looper.prepare();
+                        if (diary_list_size == 0)
+                            finish();
                         delete_diary_from_database();
                         diary_list.remove(idx);
                         diary_list_size--;
@@ -181,16 +184,17 @@ public class Diarylist extends AppCompatActivity {
 
             //로그인 성공했을 때 echo로 값
             if (!strResponse.equalsIgnoreCase(user_id)) {
+                //Toast.makeText(Diarylist.this, "다이어리가 있습니다.", Toast.LENGTH_SHORT).show();
                 return strResponse;
 
             } else {
-                Toast.makeText(Diarylist.this, "다이어리가 없습니다.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Diarylist.this, "다이어리가 없습니다.", Toast.LENGTH_SHORT).show();
                 return null;
             }
         }
         catch(Exception e)
         {
-            //Toast.makeText(Diarylist.this, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Diarylist.this, "Exception : " + e.getMessage(), Toast.LENGTH_SHORT).show();
             return null;
         }
     }
@@ -223,7 +227,7 @@ public class Diarylist extends AppCompatActivity {
                 //return strResponse;
 
             } else {
-                Toast.makeText(Diarylist.this, "삭제실패: "+strResponse, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Diarylist.this, "삭제실패: "+strResponse, Toast.LENGTH_SHORT).show();
                 return;
             }
         }
